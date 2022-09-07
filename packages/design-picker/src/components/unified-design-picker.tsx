@@ -27,6 +27,7 @@ import PatternAssemblerCta from './pattern-assembler-cta';
 import PremiumBadge from './premium-badge';
 import StyleVariationBadges from './style-variation-badges';
 import ThemePreview from './theme-preview';
+import WooCommerceBundledBadge from './woocommerce-bundled-badge';
 import type { Categorization } from '../hooks/use-categorization';
 import type { Design, StyleVariation } from '../types';
 import './style.scss';
@@ -97,6 +98,11 @@ const DesignButton: React.FC< DesignButtonProps > = ( {
 	const isEnableThemeStyleVariations =
 		isEnabled( 'signup/design-picker-style-selection' ) && isEnableThemePreviewScreen;
 	const shouldUpgrade = isPremium && ! isPremiumThemeAvailable && ! hasPurchasedTheme;
+
+	// const theme = useThemeDetails( design.slug );
+	// const theme_software_set = theme?.data?.taxonomies?.theme_software_set?.length;
+	// Just for testing
+	const showBundledBadge = design.slug === 'baxter';
 
 	function getPricingDescription() {
 		if ( ! isEnableThemePreviewScreen ) {
@@ -211,6 +217,8 @@ const DesignButton: React.FC< DesignButtonProps > = ( {
 							</div>
 						) }
 					</span>
+
+					{ showBundledBadge && <WooCommerceBundledBadge /> }
 				</span>
 				{ getPricingDescription() }
 			</button>
