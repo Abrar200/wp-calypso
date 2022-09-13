@@ -7,6 +7,7 @@ import { useSiteSlug } from '../hooks/use-site-slug';
 import { USER_STORE, ONBOARD_STORE } from '../stores';
 import type { StepPath } from './internals/steps-repository';
 import type { Flow, ProvidedDependencies } from './internals/types';
+import wpcomRequest from 'wpcom-proxy-request';
 
 export const linkInBio: Flow = {
 	name: LINK_IN_BIO_FLOW,
@@ -27,6 +28,13 @@ export const linkInBio: Flow = {
 		const siteSlug = useSiteSlug();
 		const userIsLoggedIn = useSelect( ( select ) => select( USER_STORE ).isCurrentUserLoggedIn() );
 		const locale = useLocale();
+
+		// trigger guides on step movement, we don't care about failures or response
+		wpcomRequest( {
+			path: `guides/trigger?flow=${ name }&step=${ _currentStep }`,
+			apiNamespace: 'wpcom/v2/',
+			apiVersion: '2',
+		} );
 
 		const getStartUrl = () => {
 			return locale && locale !== 'en'
