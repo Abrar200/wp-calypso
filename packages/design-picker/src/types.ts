@@ -88,6 +88,7 @@ export interface Design {
 	style_variations?: StyleVariation[];
 	price?: string;
 	verticalizable?: boolean;
+	taxonomies?: { [ key: string ]: [] };
 
 	/** @deprecated used for Gutenboarding (/new flow) */
 	stylesheet?: string;

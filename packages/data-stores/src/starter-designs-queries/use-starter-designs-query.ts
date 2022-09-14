@@ -35,6 +35,7 @@ interface StaticDesign {
 	categories: Category[];
 	price?: string;
 	style_variations?: StyleVariation[];
+	taxonomies?: { [ key: string ]: [] };
 }
 
 interface GeneratedDesign {
@@ -77,7 +78,8 @@ function fetchStarterDesigns(
 }
 
 function apiStarterDesignsStaticToDesign( design: StaticDesign ): Design {
-	const { slug, title, description, recipe, categories, price, style_variations } = design;
+	const { slug, title, description, recipe, categories, price, style_variations, taxonomies } =
+		design;
 	const is_premium =
 		( design.recipe.stylesheet && design.recipe.stylesheet.startsWith( 'premium/' ) ) || false;
 
@@ -92,6 +94,7 @@ function apiStarterDesignsStaticToDesign( design: StaticDesign ): Design {
 		design_type: is_premium ? 'premium' : 'standard',
 		style_variations,
 		verticalizable: isThemeVerticalizable( recipe.stylesheet ),
+		taxonomies,
 		// Deprecated; used for /start flow
 		features: [],
 		template: '',
