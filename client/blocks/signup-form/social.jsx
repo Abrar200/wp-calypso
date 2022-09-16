@@ -145,9 +145,8 @@ class SocialSignupForm extends Component {
 							// We need this because Apple doesn't allow to have dynamic parameters in redirect_uri.
 							queryString={ isWpccFlow( this.props.flowName ) ? window.location.search : null }
 						/>
-
-						{ ! this.props.disableTosText && <SocialSignupToS /> }
 					</div>
+					{ ! this.props.disableTosText && <SocialSignupToS /> }
 				</div>
 			)
 		);
