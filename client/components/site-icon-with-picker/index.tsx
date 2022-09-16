@@ -55,25 +55,29 @@ export function SiteIconWithPicker( {
 	return (
 		<>
 			{ editingFile && imageEditorOpen && (
-				<ImageEditor
-					className={ classNames( 'site-icon-with-picker__image-editor', imageEditorClassName ) }
-					siteId={ site?.ID }
-					media={ {
-						src: editingFile,
-					} }
-					allowedAspectRatios={ [ 'ASPECT_1X1' ] }
-					onDone={ ( _error: Error | null, image: Blob ) => {
-						onSelect( new File( [ image ], editingFileName || 'site-logo.png' ) );
-						setSelectedFileUrl( URL.createObjectURL( image ) );
-						setImageEditorOpen( false );
-					} }
-					onCancel={ () => {
-						setEditingFile( undefined );
-						setEditingFileName( undefined );
-						setImageEditorOpen( false );
-					} }
-					widthLimit={ 512 }
-				/>
+				<div className="site-icon-with-picker__background">
+					<ImageEditor
+						className={ classNames( 'site-icon-with-picker__image-editor', imageEditorClassName ) }
+						siteId={ site?.ID }
+						media={ {
+							src: editingFile,
+						} }
+						allowedAspectRatios={ [ 'ASPECT_1X1' ] }
+						onDone={ ( _error: Error | null, image: Blob ) => {
+							onSelect( new File( [ image ], editingFileName || 'site-logo.png' ) );
+							setSelectedFileUrl( URL.createObjectURL( image ) );
+							setImageEditorOpen( false );
+						} }
+						onCancel={ () => {
+							setEditingFile( undefined );
+							setEditingFileName( undefined );
+							setImageEditorOpen( false );
+						} }
+						doneButtonText={ __( ' Apply ' ) }
+						displayOnlyIcon={ true }
+						widthLimit={ 512 }
+					/>
+				</div>
 			) }
 			<FormFieldset
 				className={ classNames( 'site-icon-with-picker__site-icon', uploadFieldClassName ) }
