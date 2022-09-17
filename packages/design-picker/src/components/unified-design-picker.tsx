@@ -150,7 +150,7 @@ const DesignButton: React.FC< DesignButtonProps > = ( {
 
 		return (
 			<div className="design-picker__pricing-description">
-				{ isPremium && (
+				{ ! showBundledBadge && isPremium && (
 					<PremiumBadge
 						tooltipPosition="bottom right"
 						isPremiumThemeAvailable={ isPremiumThemeAvailable }
@@ -203,7 +203,7 @@ const DesignButton: React.FC< DesignButtonProps > = ( {
 						{ ! hideDesignTitle && (
 							<span className="design-picker__option-name">{ design.title }</span>
 						) }
-						{ ! isEnableThemePreviewScreen && isPremium && (
+						{ ! showBundledBadge && ! isEnableThemePreviewScreen && isPremium && (
 							<PremiumBadge isPremiumThemeAvailable={ isPremiumThemeAvailable } />
 						) }
 						{ isEnableThemeStyleVariations && style_variations.length > 0 && (
