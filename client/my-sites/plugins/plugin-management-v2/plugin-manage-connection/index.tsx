@@ -3,7 +3,6 @@ import PopoverMenuItem from 'calypso/components/popover-menu/item';
 import { getManageConnectionHref } from 'calypso/lib/plugins/utils';
 import type { Plugin } from '../types';
 import type { SiteDetails } from '@automattic/data-stores';
-import type { ReactElement } from 'react';
 
 import '../style.scss';
 
@@ -12,7 +11,7 @@ interface Props {
 	plugin: Plugin;
 }
 
-export default function PluginManageConnection( { site, plugin }: Props ): ReactElement | null {
+export default function PluginManageConnection( { site, plugin }: Props ) {
 	const translate = useTranslate();
 
 	const isJetpackPlugin = plugin && 'jetpack' === plugin.slug;

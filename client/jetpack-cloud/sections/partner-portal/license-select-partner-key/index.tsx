@@ -1,6 +1,5 @@
 import { Spinner } from '@automattic/components';
 import { useTranslate } from 'i18n-calypso';
-import { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import CardHeading from 'calypso/components/card-heading';
 import QueryJetpackPartnerPortalPartner from 'calypso/components/data/query-jetpack-partner-portal-partner';
@@ -16,7 +15,7 @@ import {
 import { PartnerKey } from 'calypso/state/partner-portal/types';
 import './style.scss';
 
-export default function LicenseSelectPartnerKey(): ReactElement | null {
+export default function LicenseSelectPartnerKey() {
 	const translate = useTranslate();
 	const hasKey = useSelector( hasActivePartnerKey );
 	const hasFetched = useSelector( hasFetchedPartner );

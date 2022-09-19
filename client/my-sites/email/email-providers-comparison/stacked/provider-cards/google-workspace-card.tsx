@@ -22,7 +22,6 @@ import canUserPurchaseGSuite from 'calypso/state/selectors/can-user-purchase-gsu
 import { getDomainsBySiteId } from 'calypso/state/sites/domains/selectors';
 import { getSelectedSite } from 'calypso/state/ui/selectors';
 import type { TranslateResult } from 'i18n-calypso';
-import type { ReactElement } from 'react';
 
 import './google-workspace-card.scss';
 
@@ -53,7 +52,7 @@ const googleWorkspaceCardInformation: ProviderCardProps = {
 	features: getGoogleFeatures(),
 };
 
-const GoogleWorkspaceCard = ( props: EmailProvidersStackedCardProps ): ReactElement => {
+const GoogleWorkspaceCard = ( props: EmailProvidersStackedCardProps ) => {
 	const {
 		detailsExpanded,
 		intervalLength,
