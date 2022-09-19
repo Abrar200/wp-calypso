@@ -468,6 +468,14 @@ export function generateFlows( {
 			lastModified: '2021-12-21',
 			disallowResume: false,
 		},
+		{
+			name: 'with-plugin',
+			steps: [ 'domains-plugin-preselected', 'plans', 'user' ],
+			destination: getSignupDestination,
+			description: 'A flow for adding a plugin preselected from the logged-out plugins page',
+			providesDependenciesInQuery: [ 'plugin' ],
+			lastModified: '2022-09-22',
+		},
 	];
 
 	// convert the array to an object keyed by `name`

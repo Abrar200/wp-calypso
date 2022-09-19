@@ -438,6 +438,17 @@ export function generateSteps( {
 			delayApiRequestUntilComplete: true,
 		},
 
+		'domains-plugin-preselected': {
+			stepName: 'domains-theme-preselected',
+			apiRequestFunction: createSiteWithCart,
+			providesDependencies: [ 'siteId', 'siteSlug', 'domainItem', 'pluginItem' ],
+			optionalDependencies: [ 'pluginItem' ],
+			props: {
+				isDomainOnly: false,
+			},
+			delayApiRequestUntilComplete: true,
+		},
+
 		'mailbox-domain': {
 			stepName: 'mailbox-domain',
 			apiRequestFunction: createSiteWithCart,
