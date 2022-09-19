@@ -1,7 +1,6 @@
 import { Button } from '@automattic/components';
 import { Icon, plugins } from '@wordpress/icons';
 import { useTranslate } from 'i18n-calypso';
-import { ReactElement, ReactChild } from 'react';
 import { useSelector } from 'react-redux';
 import FormInputCheckbox from 'calypso/components/forms/form-checkbox';
 import { useLocalizedMoment } from 'calypso/components/localized-moment';
@@ -21,6 +20,7 @@ import { getPluginActionStatuses } from '../utils/get-plugin-action-statuses';
 import type { Plugin } from '../types';
 import type { SiteDetails } from '@automattic/data-stores';
 import type { MomentInput } from 'moment';
+import type { PropsWithChildren } from 'react';
 
 import './style.scss';
 
@@ -40,10 +40,10 @@ export default function PluginRowFormatter( {
 	isSmallScreen,
 	className,
 	updatePlugin,
-}: Props ): ReactElement | any {
+}: Props ) {
 	const translate = useTranslate();
 
-	const PluginDetailsButton = ( props: { className: string; children: ReactChild } ) => {
+	const PluginDetailsButton = ( props: PropsWithChildren< { className: string } > ) => {
 		return (
 			<Button
 				borderless
@@ -149,63 +149,58 @@ export default function PluginRowFormatter( {
 			);
 		case 'sites':
 			return isSmallScreen ? (
-				translate(
-					'Installed on %(count)d site',
-					'Installed on %(count)d sites', // plural version of the string
-					{
-						count: siteCount,
-						args: { count: siteCount },
-					}
-				)
+				<>
+					{ translate(
+						'Installed on %(count)d site',
+						'Installed on %(count)d sites', // plural version of the string
+						{
+							count: siteCount,
+							args: { count: siteCount },
+						}
+					) }
+				</>
 			) : (
 				<PluginDetailsButton className="plugin-row-formatter__sites-count-button">
 					{ siteCount }
 				</PluginDetailsButton>
 			);
 		case 'activate':
-			return (
-				canActivate && (
-					<div className="plugin-row-formatter__toggle">
-						<PluginActivateToggle
-							isJetpackCloud
-							hideLabel={ ! isSmallScreen }
-							plugin={ pluginOnSite }
-							site={ selectedSite }
-							disabled={ !! item?.isSelectable }
-						/>
-					</div>
-				)
-			);
+			return canActivate ? (
+				<div className="plugin-row-formatter__toggle">
+					<PluginActivateToggle
+						isJetpackCloud
+						hideLabel={ ! isSmallScreen }
+						plugin={ pluginOnSite }
+						site={ selectedSite }
+						disabled={ !! item?.isSelectable }
+					/>
+				</div>
+			) : null;
 		case 'autoupdate':
-			return (
-				canUpdate && (
-					<div className="plugin-row-formatter__toggle">
-						<PluginAutoupdateToggle
-							plugin={ pluginOnSite }
-							site={ selectedSite }
-							wporg={ !! item.wporg }
-							isMarketplaceProduct={ isMarketplaceProduct( state, item?.slug ) }
-							disabled={ !! item?.isSelectable }
-						/>
-					</div>
-				)
-			);
+			return canUpdate ? (
+				<div className="plugin-row-formatter__toggle">
+					<PluginAutoupdateToggle
+						plugin={ pluginOnSite }
+						site={ selectedSite }
+						wporg={ !! item.wporg }
+						isMarketplaceProduct={ isMarketplaceProduct( state, item?.slug ) }
+						disabled={ !! item?.isSelectable }
+					/>
+				</div>
+			) : null;
 		case 'last-updated':
-			if ( item?.update && item?.last_updated ) {
-				return (
-					<span className="plugin-row-formatter__last-updated">
-						{ translate( '{{span}}Updated{{/span}} %(ago)s', {
-							components: {
-								span: <span />,
-							},
-							args: {
-								ago: ago( item.last_updated ),
-							},
-						} ) }
-					</span>
-				);
-			}
-			return null;
+			return item?.update && item?.last_updated ? (
+				<span className="plugin-row-formatter__last-updated">
+					{ translate( '{{span}}Updated{{/span}} %(ago)s', {
+						components: {
+							span: <span />,
+						},
+						args: {
+							ago: ago( item.last_updated ),
+						},
+					} ) }
+				</span>
+			) : null;
 		case 'update':
 			return (
 				<UpdatePlugin
@@ -228,6 +223,8 @@ export default function PluginRowFormatter( {
 				</div>
 			);
 		case 'bulk-actions':
+			return null;
+		default:
 			return null;
 	}
 }
