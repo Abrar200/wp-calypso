@@ -146,25 +146,6 @@ export function hasDomainRegistration( cart: ResponseCart ): boolean {
 	return getAllCartItems( cart ).some( isDomainRegistration );
 }
 
-export function hasNewDomainRegistration( cart: ResponseCart ): boolean {
-	return getAllCartItems( cart ).some( isNewDomainRegistration );
-}
-
-export function hasDomainRenewal( cart: ResponseCart ): boolean {
-	return getAllCartItems( cart ).some( isDomainRenewal );
-}
-
-/**
- * Determines whether the supplied cart item is a new domain registration (i.e. not a renewal).
- */
-function isNewDomainRegistration( cartItem: ResponseCartProduct ): boolean {
-	return isDomainRegistration( cartItem ) && ! isRenewal( cartItem );
-}
-
-function isDomainRenewal( cartItem: ResponseCartProduct ): boolean {
-	return isRenewal( cartItem ) && isDomainRegistration( cartItem );
-}
-
 export function hasDomainBeingUsedForPlan( cart: ResponseCart ): boolean {
 	return getDomainRegistrations( cart ).some( ( registration ) =>
 		isDomainBeingUsedForPlan( cart, registration.meta )
