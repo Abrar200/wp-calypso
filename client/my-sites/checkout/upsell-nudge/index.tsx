@@ -200,7 +200,9 @@ export class UpsellNudge extends Component< UpsellNudgeProps, UpsellNudgeState >
 				<QueryStoredCards />
 				{ ! hasProductsList && <QueryProductsList /> }
 				{ ! hasSitePlans && <QuerySitePlans siteId={ parseInt( String( selectedSiteId ), 10 ) } /> }
-				{ isLoading ? this.renderPlaceholders() : this.renderContent() }
+				{ isLoading && upsellType !== PROFESSIONAL_EMAIL_UPSELL
+					? this.renderPlaceholders()
+					: this.renderContent() }
 				{ this.state.showPurchaseModal && this.renderPurchaseModal() }
 				{ this.preloadIconsForPurchaseModal() }
 			</Main>
@@ -253,47 +255,7 @@ export class UpsellNudge extends Component< UpsellNudgeProps, UpsellNudgeState >
 		);
 	}
 
-	renderProfessionalEmailUpsellPlaceholder() {
-		return (
-			<>
-				<div className="upsell-nudge__placeholders">
-					<div>
-						<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__hold-tight-placeholder" />
-						<div className="upsell-nudge__placeholder-row is-placeholder" />
-						<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__price-placeholder" />
-					</div>
-				</div>
-				<div className="upsell-nudge__placeholders upsell-nudge__form-container-placeholder">
-					<div className="upsell-nudge__placeholders upsell-nudge__form-placeholder">
-						<div>
-							<div className="upsell-nudge__placeholder-row is-placeholder" />
-							<div className="upsell-nudge__placeholder-row is-placeholder" />
-							<div className="upsell-nudge__placeholder-button-container">
-								<div className="upsell-nudge__placeholder-button is-placeholder" />
-								<div className="upsell-nudge__placeholder-button is-placeholder" />
-							</div>
-						</div>
-					</div>
-					<div className="upsell-nudge__placeholders upsell-nudge__benefits-placeholder">
-						<div>
-							<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__feature-placeholder" />
-							<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__feature-placeholder" />
-							<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__feature-placeholder" />
-							<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__feature-placeholder" />
-							<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__feature-placeholder" />
-						</div>
-					</div>
-				</div>
-			</>
-		);
-	}
-
 	renderPlaceholders() {
-		const { upsellType } = this.props;
-
-		if ( upsellType === 'professional-email-upsell' ) {
-			return this.renderProfessionalEmailUpsellPlaceholder();
-		}
 		return this.renderGenericPlaceholder();
 	}
 
@@ -305,6 +267,7 @@ export class UpsellNudge extends Component< UpsellNudgeProps, UpsellNudgeState >
 			planRawPrice,
 			planDiscountedRawPrice,
 			isLoggedIn,
+			isLoading,
 			upsellType,
 			upgradeItem,
 			translate,
@@ -349,6 +312,7 @@ export class UpsellNudge extends Component< UpsellNudgeProps, UpsellNudgeState >
 						intervalLength={
 							currentPlanTerm === TERM_MONTHLY ? IntervalLength.MONTHLY : IntervalLength.ANNUALLY
 						}
+						isLoading={ isLoading }
 						/* Use the callback form of setState() to ensure handleClickAccept()
 						 is called after the state update */
 						setCartItem={ ( newCartItem, callback = noop ) =>

@@ -5,11 +5,10 @@ import { MOBILE_BREAKPOINT } from '@automattic/viewport';
 import { useBreakpoint } from '@automattic/viewport-react';
 import classNames from 'classnames';
 import i18n, { useTranslate } from 'i18n-calypso';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import poweredByTitanLogo from 'calypso/assets/images/email-providers/titan/powered-by-titan-caps.svg';
 import Badge from 'calypso/components/badge';
-import PageViewTracker from 'calypso/lib/analytics/page-view-tracker';
 import { titanMailMonthly, titanMailYearly } from 'calypso/lib/cart-values/cart-items';
 import { BillingIntervalToggle } from 'calypso/my-sites/email/email-providers-comparison/billing-interval-toggle';
 import { IntervalLength } from 'calypso/my-sites/email/email-providers-comparison/interval-length';
@@ -75,6 +74,7 @@ const ProfessionalEmailUpsell = ( {
 	handleClickDecline,
 	setCartItem,
 	intervalLength = IntervalLength.ANNUALLY,
+	isLoading,
 }: ProfessionalEmailUpsellProps ) => {
 	const translate = useTranslate();
 	const dispatch = useDispatch();
@@ -156,12 +156,50 @@ const ProfessionalEmailUpsell = ( {
 		</div>
 	);
 
+	useEffect( () => {
+		recordTracksEvent( 'calypso_page_view', {
+			path: '/checkout/offer-professional-email/:domain/:receiptId/:site',
+			title: 'Post Checkout - Professional Email Upsell',
+		} );
+	}, [] );
+
+	if ( isLoading ) {
+		return (
+			<>
+				<div className="upsell-nudge__placeholders">
+					<div>
+						<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__hold-tight-placeholder" />
+						<div className="upsell-nudge__placeholder-row is-placeholder" />
+						<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__price-placeholder" />
+					</div>
+				</div>
+				<div className="upsell-nudge__placeholders upsell-nudge__form-container-placeholder">
+					<div className="upsell-nudge__placeholders upsell-nudge__form-placeholder">
+						<div>
+							<div className="upsell-nudge__placeholder-row is-placeholder" />
+							<div className="upsell-nudge__placeholder-row is-placeholder" />
+							<div className="upsell-nudge__placeholder-button-container">
+								<div className="upsell-nudge__placeholder-button is-placeholder" />
+								<div className="upsell-nudge__placeholder-button is-placeholder" />
+							</div>
+						</div>
+					</div>
+					<div className="upsell-nudge__placeholders upsell-nudge__benefits-placeholder">
+						<div>
+							<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__feature-placeholder" />
+							<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__feature-placeholder" />
+							<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__feature-placeholder" />
+							<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__feature-placeholder" />
+							<div className="upsell-nudge__placeholder-row is-placeholder upsell-nudge__feature-placeholder" />
+						</div>
+					</div>
+				</div>
+			</>
+		);
+	}
+
 	return (
 		<>
-			<PageViewTracker
-				path="/checkout/offer-professional-email/:domain/:receiptId/:site"
-				title={ translate( 'Post Checkout - Professional Email Upsell' ) }
-			/>
 			<header className="professional-email-upsell__header">
 				<h3 className="professional-email-upsell__small-title">
 					{ isDomainOnlySite
