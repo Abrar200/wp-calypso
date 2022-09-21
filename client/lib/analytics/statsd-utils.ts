@@ -1,7 +1,7 @@
 import config from '@automattic/calypso-config';
 
 function generateUrl( featureSlug: string, eventType: string, eventValue: string ) {
-	const slug = featureSlug.replace( /[.:-]/g, '_' );
+	const slug = featureSlug.replace( /[:-]/g, '_' );
 	const type = eventType.replace( '-', '_' );
 	const json = JSON.stringify( {
 		beacons: [ `calypso.${ config( 'boom_analytics_key' ) }.${ slug }.${ type }:${ eventValue }` ],

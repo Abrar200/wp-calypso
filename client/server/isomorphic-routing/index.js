@@ -12,6 +12,7 @@ export function serverRouter( expressApp, setUpRoute, section ) {
 		expressApp.get(
 			route,
 			( req, res, next ) => {
+				req.context.usedSSSRHandler = true;
 				debug( `Using SSR pipeline for path: ${ req.path } with handler ${ route }` );
 				next();
 			},
