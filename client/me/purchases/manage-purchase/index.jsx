@@ -492,16 +492,18 @@ class ManagePurchase extends Component {
 		return null;
 	}
 
-	renderRemoveSubscriptionWarningDialog( site ) {
+	renderRemoveSubscriptionWarningDialog( site, purchase ) {
 		if ( this.state.showRemoveSubscriptionWarningDialog ) {
-			return (
-				<RemovePlanDialog
-					isDialogVisible={ this.state.showRemoveSubscriptionWarningDialog }
-					closeDialog={ this.closeDialog }
-					removePlan={ this.goToCancelLink }
-					site={ site }
-				/>
-			);
+			if ( isPlan( purchase ) ) {
+				return (
+					<RemovePlanDialog
+						isDialogVisible={ this.state.showRemoveSubscriptionWarningDialog }
+						closeDialog={ this.closeDialog }
+						removePlan={ this.goToCancelLink }
+						site={ site }
+					/>
+				);
+			}
 		}
 
 		return null;
@@ -556,8 +558,10 @@ class ManagePurchase extends Component {
 			}
 
 			if ( isSubscription( purchase ) ) {
-				event.preventDefault();
-				this.showRemoveSubscriptionWarningDialog( link );
+				if ( isPlan( purchase ) && ! isJetpackProduct( purchase ) ) {
+					event.preventDefault();
+					this.showRemoveSubscriptionWarningDialog( link );
+				}
 			}
 		};
 
@@ -989,7 +993,7 @@ class ManagePurchase extends Component {
 				/>
 				{ this.renderPurchaseDetail( preventRenewal ) }
 				{ site && this.renderNonPrimaryDomainWarningDialog( site, purchase ) }
-				{ site && this.renderRemoveSubscriptionWarningDialog( site ) }
+				{ site && this.renderRemoveSubscriptionWarningDialog( site, purchase ) }
 			</Fragment>
 		);
 	}
