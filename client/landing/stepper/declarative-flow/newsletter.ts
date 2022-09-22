@@ -3,13 +3,13 @@ import { useFlowProgress, NEWSLETTER_FLOW } from '@automattic/onboarding';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from 'react';
 import { recordTracksEvent } from 'calypso/lib/analytics/tracks';
+import wpcom from 'calypso/lib/wp';
 import { useSiteSlug } from '../hooks/use-site-slug';
 import { ONBOARD_STORE, USER_STORE } from '../stores';
 import { recordSubmitStep } from './internals/analytics/record-submit-step';
 import { ProvidedDependencies } from './internals/types';
 import type { StepPath } from './internals/steps-repository';
 import type { Flow } from './internals/types';
-import wpcomRequest from 'wpcom-proxy-request';
 
 export const newsletter: Flow = {
 	name: NEWSLETTER_FLOW,
@@ -41,10 +41,8 @@ export const newsletter: Flow = {
 		};
 
 		// trigger guides on step movement, we don't care about failures or response
-		wpcomRequest( {
-			path: `guides/trigger?flow=${ name }&step=${ _currentStep }`,
+		wpcom.req.post( `guides/trigger?flow=${ name }&step=${ _currentStep }`, {
 			apiNamespace: 'wpcom/v2/',
-			apiVersion: '2',
 		} );
 
 		function submit( providedDependencies: ProvidedDependencies = {} ) {

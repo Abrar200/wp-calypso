@@ -3,11 +3,11 @@ import { useFlowProgress, LINK_IN_BIO_FLOW } from '@automattic/onboarding';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from 'react';
 import { recordTracksEvent } from 'calypso/lib/analytics/tracks';
+import wpcom from 'calypso/lib/wp';
 import { useSiteSlug } from '../hooks/use-site-slug';
 import { USER_STORE, ONBOARD_STORE } from '../stores';
 import type { StepPath } from './internals/steps-repository';
 import type { Flow, ProvidedDependencies } from './internals/types';
-import wpcomRequest from 'wpcom-proxy-request';
 
 export const linkInBio: Flow = {
 	name: LINK_IN_BIO_FLOW,
@@ -30,10 +30,8 @@ export const linkInBio: Flow = {
 		const locale = useLocale();
 
 		// trigger guides on step movement, we don't care about failures or response
-		wpcomRequest( {
-			path: `guides/trigger?flow=${ name }&step=${ _currentStep }`,
+		wpcom.req.post( `guides/trigger?flow=${ name }&step=${ _currentStep }`, {
 			apiNamespace: 'wpcom/v2/',
-			apiVersion: '2',
 		} );
 
 		const getStartUrl = () => {
