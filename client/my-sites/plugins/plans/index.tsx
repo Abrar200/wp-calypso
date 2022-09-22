@@ -4,6 +4,7 @@ import {
 	TYPE_BUSINESS,
 	TYPE_ECOMMERCE,
 } from '@automattic/calypso-products';
+import { useDesktopBreakpoint } from '@automattic/viewport-react';
 import { useTranslate } from 'i18n-calypso';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +27,7 @@ const Plans = ( { intervalType }: { intervalType: 'yearly' | 'monthly' } ) => {
 	const translate = useTranslate();
 	const breadcrumbs = useSelector( getBreadcrumbs );
 	const selectedSite = useSelector( getSelectedSite );
+	const isDesktop = useDesktopBreakpoint();
 
 	const dispatch = useDispatch();
 
@@ -69,7 +71,7 @@ const Plans = ( { intervalType }: { intervalType: 'yearly' | 'monthly' } ) => {
 				subHeaderText={ `Choose the plan that's right for you and reimagine what's possible with plugins` }
 				brandFont
 			/>
-			<div className="plans">
+			<div className="plans in-vertically-scrolled-plans-experiment">
 				<PlansFeaturesMain
 					basePlansPath="/plugins/plans"
 					site={ selectedSite }
@@ -77,7 +79,7 @@ const Plans = ( { intervalType }: { intervalType: 'yearly' | 'monthly' } ) => {
 					selectedPlan={ PLAN_BUSINESS }
 					planTypes={ [ currentPlanType, TYPE_BUSINESS, TYPE_ECOMMERCE ] }
 					flowName={ MARKETPLACE_FLOW }
-					shouldShowPlansFeatureComparison
+					shouldShowPlansFeatureComparison={ isDesktop }
 					isReskinned
 				/>
 			</div>
